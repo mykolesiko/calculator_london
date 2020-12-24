@@ -39,20 +39,131 @@ def setup_logging():
         logging.config.dictConfig(yaml.safe_load(file))
 
 
+def get_options(cat_list):
+    options = []
+    for el  in cat_list:
+        options_el = {}
+        options_el['label'] = el;
+        options_el['value'] = el;
+        options.append(options_el)
+    return options
 
 
 def calc_mean(numeric):
         sum = 0
         s = 0
-        #for i in range(len(numeric)):
-            #if ((~math.isinf(numeric[i])) & (~math.isnan(numeric[i])) & (math.isfinite(numeric[i]))):
-            #    sum = sum + numeric[i]
-            #    s = s + 1
+        for i in range(len(numeric)):
+            if ((~math.isinf(numeric[i])) & (~math.isnan(numeric[i])) & (math.isfinite(numeric[i]))):
+                sum = sum + numeric[i]
+                s = s + 1
         if s == 0:
             sum = 0           
         else:   
             sum = sum  / s
         return sum
+
+
+def combine_data(ndata, cdata):
+
+    X = np.hstack((ndata, cdata))
+
+    for j in range(X.shape[1]):
+        mean = calc_mean(X[:, j])
+    
+        for i in range(X.shape[0]):
+      
+        #if ((X_train[i, j] > 100) | (X_train[i, j] < 0)):
+        #    X_train[i, j] = 0
+        
+            if math.isinf(X[i, j]) or math.isnan(X[i, j]):
+                X[i, j] = mean
+
+    Xd = pd.DataFrame(X)
+        #Xd = Xd[[0, 1, 2,3, 4, 5,6,7,8,9,10, 56,57,84,97,99,152, 66, 94, 107, 109, 13, 15, 47, 59, 62, 69, 83, 108, 114 ,96 , 98 ]]
+        #print(Xd)
+   
+    return(Xd)     
+
+
+
+def get_numeric_data(data):    
+        #logger.info("get numeric data")
+        
+        #numeric_data = data[['polarity', 'accommodates', 'bedrooms',  'bathrooms', 'beds', 'num',  'responce_rate', 'latitude','longitude', 'responce_rate', 'security_deposit', 'cleaning_fee' , 'guests_included',  'host_is_superhost', 'host_identity_verified', 'vigoda', 'extra_people', 'minimum_nights']]#,  'host_identity_verified', 'host_has_profile_pic', 'latitude','longitude','extra_people', 'minimum_nights',  'security_deposit', 'cleaning_fee' ]]       
+    numeric_data = data[['accommodates', 'bedrooms',  'bathrooms', 'beds', 'cleaning_fee' , 'guests_included',  'minimum_nights']]
+    numeric_data = numeric_data.apply(pd.to_numeric)
+    print(numeric_data.info())
+    for i in range(numeric_data.shape[0]):
+            #print(numeric_data.iloc[i, 0])
+        if math.isnan(numeric_data.iloc[i, 0]):
+            numeric_data.iloc[i, 0] = -1        
+    return numeric_data        
+
+
+
+
+def get_data_from_web(reg, room, cancel, prop, accomodates, beds, bath, bedrooms, night, guests, fee):
+    print(f"region = {reg} room = {room} cancel = {cancel} property = {prop} ")
+    print(f"accomodates = {accomodates} beds = {beds} bath = {bath} bedrooms = {bedrooms} night = {night} guests = {guests} fee = {fee}")
+        
+    test_web = pd.DataFrame(columns = ['id', 'name', 'summary', 'space', 'description', 'experiences_offered',
+                                           'neighborhood_overview', 'notes', 'transit', 'access', 'interaction',
+                                           'house_rules', 'host_id', 'host_since', 'host_about',
+                                           'host_response_time', 'host_response_rate', 'host_is_superhost',
+                                           'host_has_profile_pic', 'host_identity_verified',
+                                           'neighbourhood_cleansed', 'zipcode', 'latitude', 'longitude',
+                                           'is_location_exact', 'property_type', 'room_type', 'accommodates',
+                                           'bathrooms', 'bedrooms', 'beds', 'bed_type', 'amenities', 'square_feet',
+                                           'security_deposit', 'cleaning_fee', 'guests_included', 'extra_people',
+                                           'minimum_nights', 'cancellation_policy',
+                                           'require_guest_profile_picture', 'require_guest_phone_verification'])
+                                           
+    test_web.loc[0] = [1, "", "", "", "", "", "", "", "", "", "", "", 1, 0, "", "", "", 0,0,0, reg, "",0, 0,  0,  prop, room, accomodates, bath, \
+                           bedrooms, beds, "", "", 0, 0, fee, guests, 0, night, cancel, 0, 0]
+    return test_web    
+    
+
+def make_prediction(test_web):
+        ndata = get_numeric_data(test_web)#test_web[['accommodates', 'bedrooms',  'bathrooms', 'latitude','longitude', 'beds', 'cleaning_fee' , 'guests_included',  'minimum_nights']]
+        cdata = test_web[['property_type',  'room_type', 'cancellation_policy', 'neighbourhood_cleansed']]#,'responce_time']]
+        print(cdata)
+
+               
+        
+        filename = 'encoder2.sav'
+        encoder = pickle.load(open(filename, 'rb'))
+        cdata1 =  encoder.transform(cdata.T.to_dict().values())
+        print(cdata1.shape)
+        print(ndata.shape)
+        data = combine_data(ndata, cdata1)
+        
+        #filename = 'scaler2.sav'
+        #scaler = pickle.load(open(filename, 'rb'))
+        #data = scaler.transform(data)
+        filename = 'last_model2.sav'
+        loaded_model = pickle.load(open(filename, 'rb'))
+        result = loaded_model.predict(data)    
+        func = (lambda x : math.e ** x)
+        result = func(result)
+        print(result[0])
+        return result 
+    
+def get_price(reg, room, cancel, prop, accomodates, beds, bath, bedrooms, night, guests, fee):    
+    test_web = get_data_from_web(reg, room, cancel, prop, accomodates, beds, bath, bedrooms, night, guests, fee)
+    result = make_prediction(test_web)
+    return result[0] 
+
+    
+def get_predict():    
+    train = pd.read_csv( "train.csv")#, parse_dates=['host_since'],  converters= dict_convert)
+    target = train['price'].to_list()
+    train = train.drop(['price'], 1)
+    pred = make_prediction(train)
+    return target, pred
+
+
+
+
 
 def vec_amenities(pole: str):
         pole = pole.strip("{}")
@@ -89,33 +200,13 @@ def MAPE(y_pred, y_actual):
     n = len(y_pred)
     print(n)
     for i in range(n):
-        if (y_actual[i] == 0):
+        if (y_actual[i] < 0.1):
            continue
         sum = sum + abs((y_pred[i] - y_actual[i])/y_actual[i])
         #print(sum)
     return (sum/n) * 100
     
    
-def combine_data(ndata, cdata):
-
-    X = np.hstack((ndata, cdata))
-
-    for j in range(X.shape[1]):
-        mean = calc_mean(X[:, j])
-    
-        for i in range(X.shape[0]):
-      
-        #if ((X_train[i, j] > 100) | (X_train[i, j] < 0)):
-        #    X_train[i, j] = 0
-        
-            if math.isinf(X[i, j]) or math.isnan(X[i, j]):
-                X[i, j] = mean
-
-    Xd = pd.DataFrame(X)
-        #Xd = Xd[[0, 1, 2,3, 4, 5,6,7,8,9,10, 56,57,84,97,99,152, 66, 94, 107, 109, 13, 15, 47, 59, 62, 69, 83, 108, 114 ,96 , 98 ]]
-        #print(Xd)
-   
-    return(Xd)     
 
 def get_category_values(data, name):
     print(data)
@@ -133,6 +224,9 @@ def scale_data(Xd, target):
     scaler_train = StandardScaler()
     scaler_train.fit(Xd, target)
     Xd = scaler_train.transform(Xd)
+    filename = 'scaler2.sav'
+    pickle.dump(scaler_train, open(filename, 'wb'))
+
     return scaler_train, Xd
 
 
@@ -278,17 +372,7 @@ class Model:
         return self.target
 
     
-    def get_numeric_data(self, data):    
-        logger.info("get numeric data")
-        
-        #numeric_data = data[['polarity', 'accommodates', 'bedrooms',  'bathrooms', 'beds', 'num',  'responce_rate', 'latitude','longitude', 'responce_rate', 'security_deposit', 'cleaning_fee' , 'guests_included',  'host_is_superhost', 'host_identity_verified', 'vigoda', 'extra_people', 'minimum_nights']]#,  'host_identity_verified', 'host_has_profile_pic', 'latitude','longitude','extra_people', 'minimum_nights',  'security_deposit', 'cleaning_fee' ]]       
-        numeric_data = data[['accommodates', 'bedrooms',  'bathrooms', 'beds', 'cleaning_fee' , 'guests_included',  'minimum_nights']]
-        for i in range(numeric_data.shape[0]):
-            #print(numeric_data.iloc[i, 0])
-            if math.isnan(numeric_data.iloc[i, 0]):
-                numeric_data.iloc[i, 0] = -1        
-        return numeric_data        
-
+    
 
     
 
@@ -326,7 +410,7 @@ class Model:
     
             encoder = DV(sparse = False)
             encoded_data = encoder.fit_transform(categorial_data.T.to_dict().values())
-            filename = 'encoder.sav'
+            filename = 'encoder2.sav'
             pickle.dump(encoder, open(filename, 'wb'))
 
             encoded_data_train = encoded_data[0:train_clean.shape[0], : ]
@@ -378,17 +462,17 @@ class Model:
 
     def make_model_work(self):
         self.read_data("")
-        result_review = self.process_review()
-        self.add_vigoda(self.train, self.train_vigoda) 
+        #result_review = self.process_review()
+        #self.add_vigoda(self.train, self.train_vigoda) 
         #print(self.result_review)
-        self.train = self.add_reviews_info(self.train)
+        #self.train = self.add_reviews_info(self.train)
         #print(self.train.info())
-        self.add_host_since(self.train)
-        self.add_responce_rate(self.train)
+        #self.add_host_since(self.train)
+        #self.add_responce_rate(self.train)
         #print(self.train.info())
         self.process_target()
         self.target =  self.get_target()
-        ntrain = self.get_numeric_data(self.train_clean)
+        ntrain = get_numeric_data(self.train_clean)
         (cat_train, cat_test) = self.get_categorial_data(self.train_clean, self.test)
         logger.info("begin combine data")
         self.data = combine_data(ntrain, cat_train)
@@ -399,8 +483,17 @@ class Model:
 
         self.model = self.get_model( X_train, y_train)
         
-        filename = 'last_model.sav'
+        filename = 'last_model2.sav'
         pickle.dump(self.model, open(filename, 'wb'))
+        
+        a_test = np.array(y_test)
+        a = self.model.predict(X_test) 
+        func = (lambda x : math.e ** x)
+        a_test1 = func(a_test)
+        a1 = func(a)
+        print(a1[1:50])
+        print(a_test1[1:50])
+        print ("MAPE = ", MAPE(a1, a_test1))
 
         return self.model
     
