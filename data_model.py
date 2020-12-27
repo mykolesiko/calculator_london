@@ -30,7 +30,7 @@ bour_price = bour_group['price'].apply(weighted_median)
 #    return df, price, price_model
 
 
-def get_sample_data(reg, room, cancel, prop,  accomodates, beds, bath, bedrooms, night, guests, fee, \
+def get_sample_data(reg, room, cancel, prop,  lat, lon, accomodates, beds, bath, bedrooms, night, guests, fee, \
                     reg_check, room_check, cancel_check, prop_check,  acc_check, beds_check, bath_check, bedrooms_check, night_check, guests_check, fee_check):
     
     

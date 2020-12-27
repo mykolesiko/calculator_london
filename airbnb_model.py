@@ -90,7 +90,7 @@ def get_numeric_data(data):
         #logger.info("get numeric data")
         
         #numeric_data = data[['polarity', 'accommodates', 'bedrooms',  'bathrooms', 'beds', 'num',  'responce_rate', 'latitude','longitude', 'responce_rate', 'security_deposit', 'cleaning_fee' , 'guests_included',  'host_is_superhost', 'host_identity_verified', 'vigoda', 'extra_people', 'minimum_nights']]#,  'host_identity_verified', 'host_has_profile_pic', 'latitude','longitude','extra_people', 'minimum_nights',  'security_deposit', 'cleaning_fee' ]]       
-    numeric_data = data[['accommodates', 'bedrooms',  'bathrooms', 'beds', 'cleaning_fee' , 'guests_included',  'minimum_nights']]
+    numeric_data = data[['latitude', 'longitude', 'accommodates', 'bedrooms',  'bathrooms', 'beds', 'cleaning_fee' , 'guests_included',  'minimum_nights']]
     numeric_data = numeric_data.apply(pd.to_numeric)
     print(numeric_data.info())
     for i in range(numeric_data.shape[0]):
@@ -102,7 +102,7 @@ def get_numeric_data(data):
 
 
 
-def get_data_from_web(reg, room, cancel, prop, accomodates, beds, bath, bedrooms, night, guests, fee):
+def get_data_from_web(reg, room, cancel, prop,lat, lon, accomodates, beds, bath, bedrooms, night, guests, fee):
     print(f"region = {reg} room = {room} cancel = {cancel} property = {prop} ")
     print(f"accomodates = {accomodates} beds = {beds} bath = {bath} bedrooms = {bedrooms} night = {night} guests = {guests} fee = {fee}")
         
@@ -118,7 +118,7 @@ def get_data_from_web(reg, room, cancel, prop, accomodates, beds, bath, bedrooms
                                            'minimum_nights', 'cancellation_policy',
                                            'require_guest_profile_picture', 'require_guest_phone_verification'])
                                            
-    test_web.loc[0] = [1, "", "", "", "", "", "", "", "", "", "", "", 1, 0, "", "", "", 0,0,0, reg, "",0, 0,  0,  prop, room, accomodates, bath, \
+    test_web.loc[0] = [1, "", "", "", "", "", "", "", "", "", "", "", 1, 0, "", "", "", 0,0,0, reg, "", lat, lon,  0,  prop, room, accomodates, bath, \
                            bedrooms, beds, "", "", 0, 0, fee, guests, 0, night, cancel, 0, 0]
     return test_web    
     
@@ -130,7 +130,7 @@ def make_prediction(test_web):
 
                
         
-        filename = 'encoder2.sav'
+        filename = 'encoder3.sav'
         encoder = pickle.load(open(filename, 'rb'))
         cdata1 =  encoder.transform(cdata.T.to_dict().values())
         print(cdata1.shape)
@@ -140,7 +140,7 @@ def make_prediction(test_web):
         #filename = 'scaler2.sav'
         #scaler = pickle.load(open(filename, 'rb'))
         #data = scaler.transform(data)
-        filename = 'last_model2.sav'
+        filename = 'last_model3.sav'
         loaded_model = pickle.load(open(filename, 'rb'))
         result = loaded_model.predict(data)    
         func = (lambda x : math.e ** x)
@@ -148,8 +148,8 @@ def make_prediction(test_web):
         print(result[0])
         return result 
     
-def get_price(reg, room, cancel, prop, accomodates, beds, bath, bedrooms, night, guests, fee):    
-    test_web = get_data_from_web(reg, room, cancel, prop, accomodates, beds, bath, bedrooms, night, guests, fee)
+def get_price(reg, room, cancel, prop, lat, lon, accomodates, beds, bath, bedrooms, night, guests, fee):    
+    test_web = get_data_from_web(reg, room, cancel, prop, lat, lon, accomodates, beds, bath, bedrooms, night, guests, fee)
     result = make_prediction(test_web)
     return result[0] 
 
@@ -224,7 +224,7 @@ def scale_data(Xd, target):
     scaler_train = StandardScaler()
     scaler_train.fit(Xd, target)
     Xd = scaler_train.transform(Xd)
-    filename = 'scaler2.sav'
+    filename = 'scaler3.sav'
     pickle.dump(scaler_train, open(filename, 'wb'))
 
     return scaler_train, Xd
@@ -410,7 +410,7 @@ class Model:
     
             encoder = DV(sparse = False)
             encoded_data = encoder.fit_transform(categorial_data.T.to_dict().values())
-            filename = 'encoder2.sav'
+            filename = 'encoder3.sav'
             pickle.dump(encoder, open(filename, 'wb'))
 
             encoded_data_train = encoded_data[0:train_clean.shape[0], : ]
@@ -483,7 +483,7 @@ class Model:
 
         self.model = self.get_model( X_train, y_train)
         
-        filename = 'last_model2.sav'
+        filename = 'last_model3.sav'
         pickle.dump(self.model, open(filename, 'wb'))
         
         a_test = np.array(y_test)

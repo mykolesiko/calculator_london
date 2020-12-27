@@ -112,7 +112,7 @@ app.layout = html.Div(
                                       #value=neighbourhood_cleansed_options[0]['value'], style = {"width" : "30%"}),
                                       value='Greenwich', style = {"width" : "100%", "color" : "blue", "background-color" : "lightblue", "display": "inline-block", "font-size": "16px"}, multi=False)     
                     ], style = {"width" : "80%"}),
-                    html.Td(dcc.Checklist(id = "reg_check", options=[{'label': '', 'value': ''}],style = {"width" : "5%"}),  style = {"width" : "20%"})], style = {"width" : "100%"}
+                    html.Td(dcc.Checklist(id = "reg_check", options=[{'label': '', 'value': ''}],style = {"width" : "100%", 'zoom' : '3.0'}),  style = {"width" : "20%"})], style = {"width" : "100%"}
                 ),  
                 
             ], style = {"width" : "100%"}),
@@ -138,7 +138,7 @@ app.layout = html.Div(
                                       #value=neighbourhood_cleansed_options[0]['value'], style = {"width" : "30%"}),
                                       value='Entire home/apt', style = {"width" : "100%", "color" : "blue", "background-color" : "lightblue", "display": "inline-block", "font-size": "16px"})     
                     ], style = {"width" : "80%"}),
-                    html.Td(dcc.Checklist(id = "room_check", options=[{'label': '', 'value': ''}],style = {"width" : "5%"}),  style = {"width" : "20%"})], style = {"width" : "100%"}
+                    html.Td(dcc.Checklist(id = "room_check", options=[{'label': '', 'value': ''}],style = {"width" : "100%", 'zoom' : '3.0'}),  style = {"width" : "20%"})], style = {"width" : "100%"}
                 ),  
                 
             ], style = {"width" : "100%"}),
@@ -218,7 +218,7 @@ app.layout = html.Div(
             
                         html.Td([html.Label('Latitude', style = {"color" : "blue", "font-size": "20px"}), 
                                  html.Br(),
-                                 dcc.Input(id = 'latitude', value='1', type='number', style = {"height": "30px", "width" : "100%", "color" : "blue", "background-color" : "lightblue"})], style = {"width" : "35%"}), 
+                                 dcc.Input(id = 'latitude',  value='51.50853', readOnly = True, type='number', style = {"height": "30px", "width" : "100%", "color" : "blue", "background-color" : "lightblue"})], style = {"width" : "35%"}), 
                         
             
               ]),  
@@ -231,7 +231,7 @@ app.layout = html.Div(
             
                         html.Td([html.Label('Longitude', style = {"color" : "blue", "font-size": "20px"}), 
                                  html.Br(),
-                                 dcc.Input(id = 'longitude', value='1', type='number', style = {"height": "30px", "width" : "100%", "color" : "blue", "background-color" : "lightblue"})], style = {"width" : "35%"}), 
+                                 dcc.Input(id = 'longitude', value='-0.12574', type='number', readOnly = True, style = {"height": "30px", "width" : "100%", "color" : "blue", "background-color" : "lightblue"})], style = {"width" : "35%"}), 
                         
             
               ]),  
@@ -245,7 +245,7 @@ app.layout = html.Div(
             
                         html.Td([html.Label('Accomodates', style = {"color" : "blue", "font-size": "20px"}), 
                                  html.Br(),
-                                 dcc.Input(id = 'accomodates', value='1', type='number', style = {"height": "30px", "width" : "100%", "color" : "blue", "background-color" : "lightblue"})], style = {"width" : "75%"}), 
+                                 dcc.Input(id = 'accomodates', min = '0', value='0', type='number', style = {"height": "30px", "width" : "100%", "color" : "blue", "background-color" : "lightblue"})], style = {"width" : "75%"}), 
                         html.Td([dcc.Checklist(id = "acc_check", options=[{'label': '', 'value': ''}],style = {"width" : "10%"})], style = {"width" : "20%"})
             
               ]),  
@@ -262,7 +262,7 @@ app.layout = html.Div(
             
                         html.Td([html.Label('Beds', style = {"color" : "blue", "font-size": "20px"}), 
                                  html.Br(),
-                                 dcc.Input(id = 'beds', value='1', type='number', style = {"height": "30px", "width" : "100%", "color" : "blue", "background-color" : "lightblue"})], style = {"width" : "75%"}), 
+                                 dcc.Input(id = 'beds', min = '0', value='0', type='number', style = {"height": "30px", "width" : "100%", "color" : "blue", "background-color" : "lightblue"})], style = {"width" : "75%"}), 
                         html.Td([dcc.Checklist(id = "beds_check", options=[{'label': '', 'value': ''}],style = {"width" : "10%"})], style = {"width" : "20%"})
             
               ]),  
@@ -279,7 +279,7 @@ app.layout = html.Div(
             
                         html.Td([html.Label('Bathrooms', style = {"color" : "blue", "font-size": "20px"}), 
                                  html.Br(),
-                                 dcc.Input(id = 'bath', value='1', type='number', style = {"height": "30px", "width" : "100%", "color" : "blue", "background-color" : "lightblue"})], style = {"width" : "75%"}), 
+                                 dcc.Input(id = 'bath', min = '0', value='0', type='number', style = {"height": "30px", "width" : "100%", "color" : "blue", "background-color" : "lightblue"})], style = {"width" : "75%"}), 
                         html.Td([dcc.Checklist(id = "bath_check", options=[{'label': '', 'value': ''}],style = {"width" : "10%"})], style = {"width" : "20%"})
             
               ]),  
@@ -297,7 +297,7 @@ app.layout = html.Div(
             
                         html.Td([html.Label('Bedrooms', style = {"color" : "blue", "font-size": "20px"}), 
                                  html.Br(),
-                                 dcc.Input(id = 'bedrooms', value='1', type='number', style = {"height": "30px", "width" : "100%", "color" : "blue", "background-color" : "lightblue"})], style = {"width" : "75%"}), 
+                                 dcc.Input(id = 'bedrooms', min = '0', value='0', type='number', style = {"height": "30px", "width" : "100%", "color" : "blue", "background-color" : "lightblue"})], style = {"width" : "75%"}), 
                         html.Td([dcc.Checklist(id = "bedrooms_check", options=[{'label': '', 'value': ''}],style = {"width" : "10%"})], style = {"width" : "20%"})
             
               ]),  
@@ -315,7 +315,7 @@ app.layout = html.Div(
             
                         html.Td([html.Label('Minimum nights', style = {"color" : "blue", "font-size": "20px"}), 
                                  html.Br(),
-                                 dcc.Input(id = 'nights', value='1', type='number', style = {"height": "30px", "width" : "100%", "color" : "blue", "background-color" : "lightblue"})], style = {"width" : "75%"}), 
+                                 dcc.Input(id = 'nights', min = '0', value='0', type='number', style = {"height": "30px", "width" : "100%", "color" : "blue", "background-color" : "lightblue"})], style = {"width" : "75%"}), 
                         html.Td([dcc.Checklist(id = "night_check", options=[{'label': '', 'value': ''}],style = {"width" : "10%"})], style = {"width" : "20%"})
             
               ]),  
@@ -334,7 +334,7 @@ app.layout = html.Div(
             
                         html.Td([html.Label('Guests included', style = {"color" : "blue", "font-size": "20px"}), 
                                  html.Br(),
-                                 dcc.Input(id = 'guests', value='1', type='number', style = {"height": "30px", "width" : "100%", "color" : "blue", "background-color" : "lightblue"})], style = {"width" : "75%"}), 
+                                 dcc.Input(id = 'guests', min = '0', value='0', type='number', style = {"height": "30px", "width" : "100%", "color" : "blue", "background-color" : "lightblue"})], style = {"width" : "75%"}), 
                         html.Td([dcc.Checklist(id = "guests_check", options=[{'label': '', 'value': ''}],style = {"width" : "10%"})], style = {"width" : "20%"})
             
               ]),  
@@ -351,7 +351,7 @@ app.layout = html.Div(
             
                         html.Td([html.Label('Cleaning fee', style = {"color" : "blue", "font-size": "20px"}), 
                                  html.Br(),
-                                 dcc.Input(id = 'fee', value='1', type='number', style = {"height": "30px", "width" : "100%", "color" : "blue", "background-color" : "lightblue"})], style = {"width" : "75%"}), 
+                                 dcc.Input(id = 'fee', min = '0', value='0', type='number', style = {"height": "30px", "width" : "100%", "color" : "blue", "background-color" : "lightblue"})], style = {"width" : "75%"}), 
                         html.Td([dcc.Checklist(id = "fee_check", options=[{'label': '', 'value': ''}],style = {"width" : "10%"})], style = {"width" : "20%"})
             
               ]),  
@@ -425,8 +425,8 @@ app.layout = html.Div(
               Input(component_id='room_type', component_property='value'),
               Input(component_id='cancel', component_property='value'),
               Input(component_id='property', component_property='value'),
-                #Input(component_id='latitude', component_property='value'),
-                #Input(component_id='longitude', component_property='value'),
+              Input(component_id='latitude', component_property='value'),
+              Input(component_id='longitude', component_property='value'),
               Input(component_id='accomodates', component_property='value'),
               Input(component_id='beds', component_property='value'),
               Input(component_id='bath', component_property='value'),
@@ -438,8 +438,6 @@ app.layout = html.Div(
               Input(component_id='room_check', component_property='value'),
               Input(component_id='cancel_check', component_property='value'),
               Input(component_id='prop_check', component_property='value'),
-                #Input(component_id='latitude', component_property='value'),
-                #Input(component_id='longitude', component_property='value'),
               Input(component_id='acc_check', component_property='value'),
               Input(component_id='beds_check', component_property='value'),
               Input(component_id='bath_check', component_property='value'),
@@ -452,14 +450,14 @@ app.layout = html.Div(
               #State('num-multi', 'value'),
               )
 #def update_output(n_clicks, n_markers):
-def update_output(reg, room, cancel, prop,  accomodates, beds, bath, bedrooms, night, guests, fee,
+def update_output(reg, room, cancel, prop,  lat, lon, accomodates, beds, bath, bedrooms, night, guests, fee,
                   reg_check, room_check, cancel_check, prop_check,  acc_check, beds_check, bath_check, bedrooms_check, night_check, guests_check, fee_check):
 
     #debug_text = u'''
     #    The Button has been pressed {} times
     #'''.format(n_clicks)
     #return debug_text, price_markers(*get_sample_data(n_markers))
-    return price_markers(*get_sample_data(reg, room, cancel, prop,  accomodates, beds, bath, bedrooms, night, guests, fee, \
+    return price_markers(*get_sample_data(reg, room, cancel, prop, lat, lon, accomodates, beds, bath, bedrooms, night, guests, fee, \
                                           reg_check, room_check, cancel_check, prop_check,  acc_check, beds_check, bath_check, bedrooms_check, night_check, guests_check, fee_check))
 
 
@@ -469,8 +467,8 @@ def update_output(reg, room, cancel, prop,  accomodates, beds, bath, bedrooms, n
     Input(component_id='room_type', component_property='value'),
     Input(component_id='cancel', component_property='value'),
     Input(component_id='property', component_property='value'),
-    #Input(component_id='latitude', component_property='value'),
-    #Input(component_id='longitude', component_property='value'),
+    Input(component_id='latitude', component_property='value'),
+    Input(component_id='longitude', component_property='value'),
     Input(component_id='accomodates', component_property='value'),
     Input(component_id='beds', component_property='value'),
     Input(component_id='bath', component_property='value'),
@@ -479,8 +477,8 @@ def update_output(reg, room, cancel, prop,  accomodates, beds, bath, bedrooms, n
     Input(component_id='guests', component_property='value'),
     Input(component_id='fee', component_property='value')
 )
-def update_output_div(reg, room, cancel, prop,  accomodates, beds, bath, bedrooms, night, guests, fee):
-    price = get_price(reg, room, cancel, prop,  accomodates, beds, bath, bedrooms, night, guests, fee)
+def update_output_div(reg, room, cancel, prop,  lat, lon, accomodates, beds, bath, bedrooms, night, guests, fee):
+    price = get_price(reg, room, cancel, prop,  lat, lon, accomodates, beds, bath, bedrooms, night, guests, fee)
     return 'Price: {:f}'.format(price)
 
 
@@ -491,8 +489,8 @@ def update_output_div(reg, room, cancel, prop,  accomodates, beds, bath, bedroom
               Input(component_id='room_type', component_property='value'),
               Input(component_id='cancel', component_property='value'),
               Input(component_id='property', component_property='value'),
-                #Input(component_id='latitude', component_property='value'),
-                #Input(component_id='longitude', component_property='value'),
+              Input(component_id='latitude', component_property='value'),
+              Input(component_id='longitude', component_property='value'),
               Input(component_id='accomodates', component_property='value'),
               Input(component_id='beds', component_property='value'),
               Input(component_id='bath', component_property='value'),
@@ -518,14 +516,14 @@ def update_output_div(reg, room, cancel, prop,  accomodates, beds, bath, bedroom
               #State('num-multi', 'value'),
               )
 #def update_output(n_clicks, n_markers):
-def update_output(reg, room, cancel, prop,  accomodates, beds, bath, bedrooms, night, guests, fee,
+def update_output(reg, room, cancel, prop,  lat, lon, accomodates, beds, bath, bedrooms, night, guests, fee,
                   reg_check, room_check, cancel_check, prop_check,  acc_check, beds_check, bath_check, bedrooms_check, night_check, guests_check, fee_check):
 
     #debug_text = u'''
     #    The Button has been pressed {} times
     #'''.format(n_clicks)
     #return debug_text, price_markers(*get_sample_data(n_markers))
-    (df_lat_lon, price, price_model) = get_sample_data(reg, room, cancel, prop,  accomodates, beds, bath, bedrooms, night, guests, fee, \
+    (df_lat_lon, price, price_model) = get_sample_data(reg, room, cancel, prop,  lat, lon, accomodates, beds, bath, bedrooms, night, guests, fee, \
                        reg_check, room_check, cancel_check, prop_check,  acc_check, beds_check, bath_check, bedrooms_check, night_check, guests_check, fee_check)
     if price.shape[0] == 0:
         return (plotly.graph_objects.Figure())
@@ -553,6 +551,7 @@ def click_output(click_lat_lng, children):
 
 
 if __name__ == '__main__':
+    #app.run_server(host = '138.68.99.110', debug=True)
     app.run_server(debug=True)
 
 
