@@ -277,35 +277,13 @@ form_controls = dbc.Card(
                 ),
             ], no_gutters=True,
         ),
-        # dbc.FormGroup(
-        #     [
-        #         dbc.Label("Latitude"),
-        #         dbc.Input(
-        #             id="latitude",
-        #             value='51.50853',
-        #             disabled=True,
-        #             type='number',
-        #         ),
-        #     ]
-        # ),
-        # dbc.FormGroup(
-        #     [
-        #         dbc.Label("Longitude"),
-        #         dbc.Input(
-        #             id="longitude",
-        #             value='-0.12574',
-        #             disabled=True,
-        #             type='number',
-        #         )
-        #     ],
-        # ),
         dbc.FormGroup(
             [
                 dbc.Label("Accommodates"),
                 dbc.Input(
                     id="accomodates",
-                    min='0',
-                    value='0',
+                    min='1',
+                    value='1',
                     type='number',
                 ),
             ],
@@ -316,7 +294,7 @@ form_controls = dbc.Card(
                 dbc.Input(
                     id="beds",
                     min='0',
-                    value='0',
+                    value='1',
                     type='number',
                 ),
             ]
@@ -348,8 +326,8 @@ form_controls = dbc.Card(
                 dbc.Label("Minimum nights"),
                 dbc.Input(
                     id="nights",
-                    min='0',
-                    value='0',
+                    min='1',
+                    value='1',
                     type='number',
                 ),
             ]
@@ -359,8 +337,8 @@ form_controls = dbc.Card(
                 dbc.Label("Guests included"),
                 dbc.Input(
                     id="guests",
-                    min='0',
-                    value='0',
+                    min='1',
+                    value='1',
                     type='number',
                 ),
             ]
@@ -420,46 +398,97 @@ hist = dcc.Graph(id='graph', )
 # Description of project
 description = dbc.Card(
     [
-        dbc.CardBody(
+        dbc.Row(
             [
-                html.H2("What does it mean",
-                        className="card-title", ),
-                html.P("Users are not always able to define the value of their apartments, "
-                       "because many factors must be taken into account.",
-                       className="card-text", ),
-                html.P("We can make this task easier for users, increase rental income and "
-                       "our own profit through a higher commission:",
-                       className="card-text", ),
-                html.Ol(
+                dbc.Col(
                     [
-                        html.Li("If the landlord puts a price, and the model has determined "
-                                "a higher price, then it is worth offering to raise the price "
-                                "of the apartment."),
-                        html.Li("The landlord can independently “play” with the settings, find "
-                                "his own points of growth (for example, put an extra bed)."),
-                    ]
+                        dbc.CardHeader(
+                            html.H2(
+                                dbc.Button(
+                                    f"What does it mean >",
+                                    id=f"group-wdtm-toggle",
+                                    size="lg",
+                                    color="secondary",
+                                ), className="card-title",
+                                style={'margin-bottom': '0'},
+                            )
+                        ),
+                    ], md=4
                 ),
-                html.P("An additional plus is increased loyalty to the company by providing a "
-                       "convenient service for price research.",
-                       className="card-text", ),
-            ],
+                dbc.Col(
+                    [
+                        dbc.CardHeader(
+                            html.H2(
+                                dbc.Button(
+                                    f"What kind of data we have >",
+                                    id=f"group-dwh-toggle",
+                                    size="lg",
+                                    color="secondary",
+                                ), className="card-title",
+                                style={'margin-bottom': '0'},
+                            )
+                        ),
+                    ], md=8
+                ),
+            ], #no_gutters=True,
+        ),
+        dbc.Collapse(
+            dbc.CardBody(
+                [
+                    html.P("Users are not always able to define the value of their apartments, "
+                           "because many factors must be taken into account.",
+                           className="card-text", ),
+                    html.P("We can make this task easier for users, increase rental income and "
+                           "our own profit through a higher commission:",
+                           className="card-text", ),
+                    html.Ol(
+                        [
+                            html.Li("If the landlord puts a price, and the model has determined "
+                                    "a higher price, then it is worth offering to raise the price "
+                                    "of the apartment."),
+                            html.Li("The landlord can independently “play” with the settings, find "
+                                    "his own points of growth (for example, put an extra bed)."),
+                            html.Li("The opportunity to see the distribution of prices for "
+                                    "apartments with similar basic properties, to understand how "
+                                    "much the rental price can be increased, for example, by "
+                                    "making repairs, improving the photo of the apartment, etc."),
+                        ]
+                    ),
+                    html.P("An additional plus is increased loyalty to the company by providing a "
+                           "convenient service for price research.",
+                           className="card-text", ),
+                ]
+            ),
+            id=f"collapse-wdtm",
+        ),
+        dbc.Collapse(
+            dbc.CardBody(
+                [
+                    html.P("In our research the data with parameters of London's apartments "
+                           "scraped from Airbnb are used, also we use datasets with reviews "
+                           "of travelers and information on the availability of the apartments "
+                           "during the year.",
+                           className="card-text", ),
+                ]
+            ),
+            id=f"collapse-dwh",
         ),
     ],
 )
 
 # Data review
-data_review = dbc.Card(
-    [
-        dbc.CardBody(
-            [
-                html.H2("What kind of data we have",
-                        className="card-title", ),
-                html.P("Some words about data ...",
-                       className="card-text", ),
-            ],
-        ),
-    ],
-)
+# data_review = dbc.Card(
+#     [
+#         dbc.CardBody(
+#             [
+#                 html.H2("What kind of data we have",
+#                         className="card-title", ),
+#                 html.P("Some words about data ...",
+#                        className="card-text", ),
+#             ],
+#         ),
+#     ],
+# )
 
 # Model review
 model_review = dbc.Row(
@@ -577,11 +606,11 @@ app.layout = dbc.Container(
         ),
 
         # data review
-        dbc.Row(
-            [
-                dbc.Col(data_review, md=12),
-            ]
-        ),
+        # dbc.Row(
+        #     [
+        #         dbc.Col(data_review, md=12),
+        #     ]
+        # ),
 
         # model review
         html.Hr(),
@@ -613,337 +642,6 @@ END OF TEMPLATE PART
 '''
 
 
-# app_layout = html.Div(
-#     [
-#         html.Table([
-#             html.Tr([
-#                 html.Td(children=[
-#                     html.Div([
-#
-#                         html.Table([
-#                             html.Tr([
-#                                 html.Th(html.Label('Evaluate the price of your FLAT!',
-#                                                    style={"color": "blue", "font-size": "20px", "width": "100%"}),
-#                                         style={"width": "80%"}),
-#                                 html.Th(html.Label('Filtered by feature ON MAP ',
-#                                                    style={"color": "blue", "font-size": "20px", "width": "100%"}),
-#                                         style={"width": "20%"})
-#                             ])
-#                         ], style={"width": "100%"}),
-#
-#                         html.Table([
-#                             html.Tr([
-#                                 html.Td(children=[html.Label('District', style={"color": "blue", "font-size": "20px",
-#                                                                                 "width": "100%"}),
-#                                                   dcc.Dropdown(id='reg',
-#                                                                options=neighbourhood_cleansed_options,
-#                                                                value='Greenwich',
-#                                                                style={"width": "100%", "color": "blue",
-#                                                                       "background-color": "lightblue",
-#                                                                       "display": "inline-block", "font-size": "16px"},
-#                                                                multi=False)
-#                                                   ], style={"width": "80%"}),
-#                                 html.Td(dcc.Checklist(id="reg_check", options=[{'label': '', 'value': ''}],
-#                                                       style={"width": "100%", 'zoom': '3.0'}), style={"width": "20%"})],
-#                                 style={"width": "100%"}
-#                             ),
-#
-#                         ], style={"width": "100%"}),
-#
-#                         html.Br(),
-#
-#                         html.Table([
-#                             html.Tr([
-#                                 html.Td(children=[html.Label('Room type', style={"color": "blue", "font-size": "20px",
-#                                                                                  "width": "100%"}),
-#                                                   dcc.Dropdown(id='room_type',
-#                                                                options=room_type_options,
-#                                                                value='Entire home/apt',
-#                                                                style={"width": "100%", "color": "blue",
-#                                                                       "background-color": "lightblue",
-#                                                                       "display": "inline-block", "font-size": "16px"})
-#                                                   ], style={"width": "80%"}),
-#                                 html.Td(dcc.Checklist(id="room_check", options=[{'label': '', 'value': ''}],
-#                                                       style={"width": "100%", 'zoom': '3.0'}), style={"width": "20%"})],
-#                                 style={"width": "100%"}
-#                             ),
-#
-#                         ], style={"width": "100%"}),
-#
-#                         html.Br(),
-#
-#                         html.Table([
-#                             html.Tr([
-#                                 html.Td(children=[html.Label('Cancellation policy',
-#                                                              style={"color": "blue", "font-size": "20px",
-#                                                                     "width": "100%"}),
-#                                                   dcc.Dropdown(id='cancel',
-#                                                                options=cancel_options,
-#                                                                value='moderate',
-#                                                                style={"width": "100%", "color": "blue",
-#                                                                       "background-color": "lightblue",
-#                                                                       "display": "inline-block", "font-size": "16px"})
-#                                                   ], style={"width": "80%"}),
-#                                 html.Td(dcc.Checklist(id="cancel_check", options=[{'label': '', 'value': ''}],
-#                                                       style={"width": "5%"}), style={"width": "20%"})],
-#                                 style={"width": "100%"}
-#                             ),
-#
-#                         ], style={"width": "100%"}),
-#
-#                         html.Br(),
-#
-#                         html.Table([
-#                             html.Tr([
-#                                 html.Td(children=[html.Label('Property type',
-#                                                              style={"color": "blue", "font-size": "20px",
-#                                                                     "width": "100%"}),
-#                                                   dcc.Dropdown(id='property',
-#                                                                options=property_options,
-#                                                                # options = [{'label': 'Westminster ', 'value': 'Westminster'},
-#                                                                # /{'label': u'Tower Hamlets', 'value': 'Tower Hamlets'}],
-#                                                                # value=neighbourhood_cleansed_options[0]['value'], style = {"width" : "30%"}),
-#                                                                value='Apartment',
-#                                                                style={"width": "100%", "color": "blue",
-#                                                                       "background-color": "lightblue",
-#                                                                       "display": "inline-block", "font-size": "16px"})
-#                                                   ], style={"width": "80%"}),
-#                                 html.Td(dcc.Checklist(id="prop_check", options=[{'label': '', 'value': ''}],
-#                                                       style={"width": "5%"}), style={"width": "20%"})],
-#                                 style={"width": "100%"}
-#                             ),
-#
-#                         ], style={"width": "100%"}),
-#
-#                         html.Br(),
-#
-#                         html.Table([
-#                             html.Tr([
-#
-#                                 html.Td([html.Label('Latitude', style={"color": "blue", "font-size": "20px"}),
-#                                          html.Br(),
-#                                          dcc.Input(id='latitude', value='51.50853', readOnly=True, type='number',
-#                                                    style={"height": "30px", "width": "100%", "color": "blue",
-#                                                           "background-color": "lightblue"})], style={"width": "35%"}),
-#
-#                             ]),
-#                         ], style={"width": "50%"}),
-#
-#                         html.Br(),
-#
-#                         html.Table([
-#                             html.Tr([
-#
-#                                 html.Td([html.Label('Longitude', style={"color": "blue", "font-size": "20px"}),
-#                                          html.Br(),
-#                                          dcc.Input(id='longitude', value='-0.12574', type='number', readOnly=True,
-#                                                    style={"height": "30px", "width": "100%", "color": "blue",
-#                                                           "background-color": "lightblue"})], style={"width": "35%"}),
-#
-#                             ]),
-#                         ], style={"width": "50%"}),
-#
-#                         html.Br(),
-#
-#                         html.Table([
-#                             html.Tr([
-#
-#                                 html.Td([html.Label('Accomodates', style={"color": "blue", "font-size": "20px"}),
-#                                          html.Br(),
-#                                          dcc.Input(id='accomodates', min='0', value='0', type='number',
-#                                                    style={"height": "30px", "width": "100%", "color": "blue",
-#                                                           "background-color": "lightblue"})], style={"width": "75%"}),
-#                                 html.Td([dcc.Checklist(id="acc_check", options=[{'label': '', 'value': ''}],
-#                                                        style={"width": "10%"})], style={"width": "20%"})
-#
-#                             ]),
-#                         ], style={"width": "100%"}),
-#
-#                         html.Br(),
-#
-#                         html.Table([
-#                             html.Tr([
-#
-#                                 html.Td([html.Label('Beds', style={"color": "blue", "font-size": "20px"}),
-#                                          html.Br(),
-#                                          dcc.Input(id='beds', min='0', value='0', type='number',
-#                                                    style={"height": "30px", "width": "100%", "color": "blue",
-#                                                           "background-color": "lightblue"})], style={"width": "75%"}),
-#                                 html.Td([dcc.Checklist(id="beds_check", options=[{'label': '', 'value': ''}],
-#                                                        style={"width": "10%"})], style={"width": "20%"})
-#
-#                             ]),
-#                         ], style={"width": "100%"}),
-#
-#                         html.Br(),
-#
-#                         html.Table([
-#                             html.Tr([
-#
-#                                 html.Td([html.Label('Bathrooms', style={"color": "blue", "font-size": "20px"}),
-#                                          html.Br(),
-#                                          dcc.Input(id='bath', min='0', value='0', type='number',
-#                                                    style={"height": "30px", "width": "100%", "color": "blue",
-#                                                           "background-color": "lightblue"})], style={"width": "75%"}),
-#                                 html.Td([dcc.Checklist(id="bath_check", options=[{'label': '', 'value': ''}],
-#                                                        style={"width": "10%"})], style={"width": "20%"})
-#
-#                             ]),
-#                         ], style={"width": "100%"}),
-#
-#                         html.Br(),
-#
-#                         html.Table([
-#                             html.Tr([
-#
-#                                 html.Td([html.Label('Bedrooms', style={"color": "blue", "font-size": "20px"}),
-#                                          html.Br(),
-#                                          dcc.Input(id='bedrooms', min='0', value='0', type='number',
-#                                                    style={"height": "30px", "width": "100%", "color": "blue",
-#                                                           "background-color": "lightblue"})], style={"width": "75%"}),
-#                                 html.Td([dcc.Checklist(id="bedrooms_check", options=[{'label': '', 'value': ''}],
-#                                                        style={"width": "10%"})], style={"width": "20%"})
-#
-#                             ]),
-#                         ], style={"width": "100%"}),
-#
-#                         html.Br(),
-#
-#                         html.Table([
-#                             html.Tr([
-#
-#                                 html.Td([html.Label('Minimum nights', style={"color": "blue", "font-size": "20px"}),
-#                                          html.Br(),
-#                                          dcc.Input(id='nights', min='0', value='0', type='number',
-#                                                    style={"height": "30px", "width": "100%", "color": "blue",
-#                                                           "background-color": "lightblue"})], style={"width": "75%"}),
-#                                 html.Td([dcc.Checklist(id="night_check", options=[{'label': '', 'value': ''}],
-#                                                        style={"width": "10%"})], style={"width": "20%"})
-#
-#                             ]),
-#                         ], style={"width": "100%"}),
-#
-#                         html.Br(),
-#
-#                         html.Table([
-#                             html.Tr([
-#
-#                                 html.Td([html.Label('Guests included', style={"color": "blue", "font-size": "20px"}),
-#                                          html.Br(),
-#                                          dcc.Input(id='guests', min='0', value='0', type='number',
-#                                                    style={"height": "30px", "width": "100%", "color": "blue",
-#                                                           "background-color": "lightblue"})], style={"width": "75%"}),
-#                                 html.Td([dcc.Checklist(id="guests_check", options=[{'label': '', 'value': ''}],
-#                                                        style={"width": "10%"})], style={"width": "20%"})
-#
-#                             ]),
-#                         ], style={"width": "100%"}),
-#
-#                         html.Br(),
-#
-#                         html.Table([
-#                             html.Tr([
-#
-#                                 html.Td([html.Label('Cleaning fee', style={"color": "blue", "font-size": "20px"}),
-#                                          html.Br(),
-#                                          dcc.Input(id='fee', min='0', value='0', type='number',
-#                                                    style={"height": "30px", "width": "100%", "color": "blue",
-#                                                           "background-color": "lightblue"})], style={"width": "75%"}),
-#                                 html.Td([dcc.Checklist(id="fee_check", options=[{'label': '', 'value': ''}],
-#                                                        style={"width": "10%"})], style={"width": "20%"})
-#
-#                             ]),
-#                         ], style={"width": "100%"}),
-#
-#                         html.Br(),
-#                         html.Br(),
-#
-#                         html.Div(id='price', style={"width": "100%", "color": "red", "background-color": "white",
-#                                                     "font-size": "20px"}),
-#                     ])
-#                 ], style={"width": "30%"}),
-#                 html.Td(children=[
-#
-#                     html.Div(
-#                         dl.Map(id='map',
-#                                children=[
-#                                    dl.LayersControl(
-#                                        carto_tile_layers +
-#                                        [dl.Overlay(
-#                                            dl.LayerGroup(
-#                                                id='marker_layer',
-#                                            ),
-#                                            name="price_markers",
-#                                            checked=True)]
-#                                    ),
-#                                    dl.LayerGroup(id="click_marker", children=[]),
-#                                ],
-#                                zoom=11,
-#                                center=[51.50853, -0.12574],
-#                                ),
-#                         style={
-#
-#                             'width': 'calc(100% - 50px)',
-#                             'height': 'calc(90vh - 410px)',
-#
-#                             'margin': "130px 0 0 10px",
-#
-#                         },
-#                     ),
-#
-#                     dcc.Graph(
-#                         id='graph',
-#                     )
-#                 ], style={"width": "70%"})
-#             ], style={"width": "80%"})
-#         ], style={"width": "100%"})
-#     ])
-
-
-@app.callback(  # Output('debug-info', 'children'),
-    Output('marker_layer', 'children'),
-    Input(component_id='reg', component_property='value'),
-    Input(component_id='room_type', component_property='value'),
-    Input(component_id='cancel', component_property='value'),
-    Input(component_id='property', component_property='value'),
-    Input(component_id='latitude', component_property='value'),
-    Input(component_id='longitude', component_property='value'),
-    Input(component_id='accomodates', component_property='value'),
-    Input(component_id='beds', component_property='value'),
-    Input(component_id='bath', component_property='value'),
-    Input(component_id='bedrooms', component_property='value'),
-    Input(component_id='nights', component_property='value'),
-    Input(component_id='guests', component_property='value'),
-    Input(component_id='fee', component_property='value'),
-    Input(component_id='reg_check', component_property='value'),
-    Input(component_id='room_check', component_property='value'),
-    Input(component_id='cancel_check', component_property='value'),
-    Input(component_id='prop_check', component_property='value'),
-    Input(component_id='acc_check', component_property='value'),
-    Input(component_id='beds_check', component_property='value'),
-    Input(component_id='bath_check', component_property='value'),
-    Input(component_id='bedrooms_check', component_property='value'),
-    Input(component_id='night_check', component_property='value'),
-    Input(component_id='guests_check', component_property='value'),
-    Input(component_id='fee_check', component_property='value'),
-
-    # Input('update-button-state', 'n_clicks'),
-    # State('num-multi', 'value'),
-)
-# def update_output(n_clicks, n_markers):
-def update_output(reg, room, cancel, prop, lat, lon, accomodates, beds, bath, bedrooms, night, guests, fee,
-                  reg_check, room_check, cancel_check, prop_check, acc_check, beds_check, bath_check, bedrooms_check,
-                  night_check, guests_check, fee_check):
-    # debug_text = u'''
-    #    The Button has been pressed {} times
-    # '''.format(n_clicks)
-    # return debug_text, price_markers(*get_sample_data(n_markers))
-    return price_markers(
-        *get_sample_data(reg, room, cancel, prop, lat, lon, accomodates, beds, bath, bedrooms, night, guests, fee, \
-                         reg_check, room_check, cancel_check, prop_check, acc_check, beds_check, bath_check,
-                         bedrooms_check, night_check, guests_check, fee_check))
-
-
 @app.callback(
     Output(component_id='price', component_property='children'),
     Input(component_id='reg', component_property='value'),
@@ -966,6 +664,7 @@ def update_output_div(reg, room, cancel, prop, lat, lon, accomodates, beds, bath
 
 
 @app.callback(  # Output('debug-info', 'children'),
+    Output('marker_layer', 'children'),
     Output(component_id='graph', component_property='figure'),
     Input(component_id='reg', component_property='value'),
     Input(component_id='room_type', component_property='value'),
@@ -997,14 +696,9 @@ def update_output_div(reg, room, cancel, prop, lat, lon, accomodates, beds, bath
     # Input('update-button-state', 'n_clicks'),
     # State('num-multi', 'value'),
 )
-# def update_output(n_clicks, n_markers):
 def update_output(reg, room, cancel, prop, lat, lon, accomodates, beds, bath, bedrooms, night, guests, fee,
                   reg_check, room_check, cancel_check, prop_check, acc_check, beds_check, bath_check, bedrooms_check,
                   night_check, guests_check, fee_check):
-    # debug_text = u'''
-    #    The Button has been pressed {} times
-    # '''.format(n_clicks)
-    # return debug_text, price_markers(*get_sample_data(n_markers))
     (df_lat_lon, price, price_model) = get_sample_data(reg, room, cancel, prop, lat, lon, accomodates, beds, bath,
                                                        bedrooms, night, guests, fee, \
                                                        reg_check, room_check, cancel_check, prop_check, acc_check,
@@ -1013,7 +707,7 @@ def update_output(reg, room, cancel, prop, lat, lon, accomodates, beds, bath, be
     if price.shape[0] == 0:
         return (plotly.graph_objects.Figure())
     fig = px.histogram(price, nbins=100)
-    return fig
+    return price_markers(df_lat_lon, price, price_model), fig
 
 
 @app.callback(Output('latitude', 'value'),
@@ -1030,6 +724,30 @@ def click_output(click_lat_lng, children):
         children = [dl.Marker(children=[dl.Tooltip("Your location"), dl.Popup(str(lat_lng))], position=lat_lng)]
 
     return lat_str, lng_str, children
+
+
+# Toogles
+
+# Description toogle
+@app.callback(
+    Output("collapse-wdtm", "is_open"),
+    [Input("group-wdtm-toggle", "n_clicks")],
+    [State("collapse-wdtm", "is_open")],
+)
+def toggle_collapse(n, is_open):
+    if n:
+        return not is_open
+    return is_open
+
+@app.callback(
+    Output("collapse-dwh", "is_open"),
+    [Input("group-dwh-toggle", "n_clicks")],
+    [State("collapse-dwh", "is_open")],
+)
+def toggle_collapse2(n, is_open):
+    if n:
+        return not is_open
+    return is_open
 
 
 if __name__ == '__main__':
