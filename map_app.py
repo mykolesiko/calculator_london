@@ -16,6 +16,9 @@ from airbnb_model import get_options, make_prediction
 import plotly.express as px
 import plotly
 
+app = dash.Dash(external_stylesheets=[dbc.themes.DARKLY])
+server = app.server
+
 property_list = ['Earth house', 'Hut', 'Treehouse', 'Townhouse', 'Tipi', 'Yurt', 'Apartment', 'Hostel', 'Parking Space',
                  'Cottage', 'Farm stay', 'Aparthotel', 'Nature lodge', 'Bed and breakfast', 'Guesthouse', 'Tiny house',
                  'Villa', 'Cabin', 'Boutique hotel', 'Lighthouse', 'Ryokan (Japan)', 'Tent', 'Other',
@@ -592,7 +595,6 @@ conclusion = dbc.Card(
     ],
 )
 
-app = dash.Dash(external_stylesheets=[dbc.themes.DARKLY])
 app.layout = dbc.Container(
     [
         html.Hr(),
