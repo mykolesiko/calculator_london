@@ -13,6 +13,7 @@ usecols = ['price', 'neighbourhood_cleansed',
            ]
 
 data = pd.read_csv('train.csv', usecols=usecols)
+#data.to_csv('train_usecols.csv', index=False)
 
 def weighted_median(y1):
     y1 = np.array(y1)
