@@ -642,6 +642,7 @@ END OF TEMPLATE PART
 '''
 
 
+
 @app.callback(
     Output(component_id='price', component_property='children'),
     Input(component_id='reg', component_property='value'),
